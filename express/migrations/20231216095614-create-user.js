@@ -15,6 +15,8 @@ module.exports = {
         },
         user_full_name: {
           type: Sequelize.STRING,
+          unique: true,
+          allowNull: false,
         },
         user_type: {
           type: Sequelize.CHAR,
@@ -24,18 +26,24 @@ module.exports = {
         },
         user_email: {
           type: Sequelize.STRING,
+          allowNull: false,
         },
         user_phone_number: {
           unique: true,
+          allowNull: false,
           type: Sequelize.STRING,
+        },
+        user_modified_date: {
+          allowNull: true,
+          type: Sequelize.DATEONLY,
         },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,
         },
         updatedAt: {
-          allowNull: false,
-          type: Sequelize.DATE,
+          allowNull: true,
+          type: Sequelize.DATEONLY,
         },
       },
       {

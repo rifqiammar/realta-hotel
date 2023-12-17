@@ -19,7 +19,7 @@ app.use(routes);
 // Middleware Error Handling
 // Semua Error yang ada di Project Api ini akan masuk ke middleware ini jika tidak ada yang menangani
 app.use((err, req, res, next) => {
-  res.json({ message: err.message });
+  res.status(err.status).json({ message: err.message });
 });
 
 app.listen(PORT, () => {

@@ -1,10 +1,12 @@
 const { Router } = require("express");
 
-const { getSignUp } = require("../controllers/users/signUp");
+const { signUp, getDataSignUP } = require("../controllers/users/signUp");
+const { signUpValidator } = require("../middlewares/validator/signUpValidator");
 
 const usersRoute = Router();
 
 // Sign Up Route
-usersRoute.get("/signupemployee", getSignUp);
+usersRoute.post("/signupemployee", signUpValidator, signUp);
+usersRoute.get("/signupemployee", getDataSignUP);
 
 module.exports = usersRoute;

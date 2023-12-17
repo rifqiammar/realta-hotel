@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       uspro_id: {
         autoIncrement: true,
-        type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
+        type: DataTypes.INTEGER,
       },
       // uspro_national_id: DataTypes.STRING,
       uspro_birt_date: DataTypes.DATEONLY,
@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
           model: "User",
           key: "user_id",
         },
+        type: DataTypes.INTEGER,
       },
     },
     {

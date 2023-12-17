@@ -24,9 +24,11 @@ module.exports = {
         },
         uspa_passwordHash: {
           type: Sequelize.STRING,
+          allowNull: false,
         },
         uspa_passwordSalt: {
           type: Sequelize.STRING,
+          allowNull: false,
         },
         createdAt: {
           allowNull: false,
