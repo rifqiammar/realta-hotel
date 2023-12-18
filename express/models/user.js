@@ -11,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.User_Bonus_Point, { foreignKey: "ubpo_user_id", onDelete: "cascade" });
       User.hasMany(models.User_Member, { foreignKey: "usme_user_id", onDelete: "cascade" });
-      User.hasMany(models.User_Password, { foreignKey: "uspa_user_id", onDelete: "cascade" });
+      User.hasOne(models.User_Password, { foreignKey: "uspa_user_id", onDelete: "cascade" });
       User.hasMany(models.User_Profile, { foreignKey: "uspro_user_id", onDelete: "cascade" });
-      User.hasMany(models.User_Role, { foreignKey: "usro_user_id", onDelete: "cascade" });
+      User.hasOne(models.User_Role, { foreignKey: "usro_user_id", onDelete: "cascade" });
     }
   }
   User.init(
@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       user_full_name: {
-        unique: true,
         allowNull: false,
         type: DataTypes.STRING,
       },
@@ -33,7 +32,6 @@ module.exports = (sequelize, DataTypes) => {
       user_company_name: DataTypes.STRING,
       user_email: {
         // unique: true,
-        allowNull: false,
         type: DataTypes.STRING,
       },
       user_phone_number: {

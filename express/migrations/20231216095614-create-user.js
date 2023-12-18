@@ -15,7 +15,6 @@ module.exports = {
         },
         user_full_name: {
           type: Sequelize.STRING,
-          unique: true,
           allowNull: false,
         },
         user_type: {
@@ -26,7 +25,6 @@ module.exports = {
         },
         user_email: {
           type: Sequelize.STRING,
-          allowNull: false,
         },
         user_phone_number: {
           unique: true,

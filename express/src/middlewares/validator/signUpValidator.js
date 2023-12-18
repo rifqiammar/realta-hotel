@@ -10,7 +10,7 @@ const signUpValidator = async (req, res, next) => {
   for (let key in data) {
     if (validator.isEmpty(data[key].trim())) {
       const error = new Error(`${key} tidak boleh kosong!`);
-      error.status = 400;
+      error.statusCode = 400;
       return next(error);
     }
   }
@@ -22,34 +22,53 @@ const signUpValidator = async (req, res, next) => {
 
   if (duplicate) {
     const error = new Error(`Username ${username} sudah tersedia!`);
-    error.status = 400;
+    error.statusCode = 400;
     return next(error);
   }
 
   // Username letter format
   if (!validator.isAlpha(username.replace(/\s/g, ""))) {
     const error = new Error(`${username} harus huruf!`);
-    error.status = 400;
+    error.statusCode = 400;
     return next(error);
   }
 
   // Email Format
   if (!validator.isEmail(email)) {
     const error = new Error(`${email} format email salah!`);
-    error.status = 400;
+    error.statusCode = 400;
     return next(error);
   }
 
   // Password Lenght
   if (!/^.{6,}$/.test(password)) {
     const error = new Error("Password anda harus 6 karakter! ");
-    error.status = 400;
+    error.statusCode = 400;
     return next(error);
   }
 
   // Password Confirmation
   if (!validator.equals(password, confirmPassword)) {
     const error = new Error("Konfirmasi password anda tidak cocok! ");
+    error.statusCode = 400;
+    return next(error);
+  }
+
+  // Phone Format
+  if (!validator.isMobilePhone(phone, ["id-ID"])) {
+    const error = new Error("Nomer Hp harus format indonesia! ");
+    error.statusCode = 400;
+    return next(error);
+  }
+
+  next();
+};
+
+const guestSignUpValidation = (req, res, next) => {
+  const { phone } = req.body;
+
+  if (validator.isEmpty(phone.trim())) {
+    const error = new Error(`Phone Number tidak boleh kosong!`);
     error.status = 400;
     return next(error);
   }
@@ -64,4 +83,4 @@ const signUpValidator = async (req, res, next) => {
   next();
 };
 
-module.exports = { signUpValidator };
+module.exports = { signUpValidator, guestSignUpValidation };
