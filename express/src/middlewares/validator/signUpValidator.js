@@ -6,12 +6,17 @@ const signUpValidator = async (req, res, next) => {
 
   const data = { username, email, password, confirmPassword, phone };
 
+  // tempError
+  let errorMsg = [];
+
   // Check Jika body kosong
   for (let key in data) {
     if (validator.isEmpty(data[key].trim())) {
-      const error = new Error(`${key} tidak boleh kosong!`);
-      error.statusCode = 400;
-      return next(error);
+      // const error = new Error(`${key} tidak boleh kosong!`);
+      // error.statusCode = 400;
+      // return next(error);
+
+      errorMsg.push([key, `${key} tidak boleh kosong!`]);
     }
   }
 
@@ -21,44 +26,36 @@ const signUpValidator = async (req, res, next) => {
   });
 
   if (duplicate) {
-    const error = new Error(`Username ${username} sudah tersedia!`);
-    error.statusCode = 400;
-    return next(error);
+    errorMsg.push(["duplicate", `Username ${username} sudah tersedia!`]);
   }
 
   // Username letter format
   if (!validator.isAlpha(username.replace(/\s/g, ""))) {
-    const error = new Error(`${username} harus huruf!`);
-    error.statusCode = 400;
-    return next(error);
+    errorMsg.push(["username", `${username} harus huruf!`]);
   }
 
   // Email Format
   if (!validator.isEmail(email)) {
-    const error = new Error(`${email} format email salah!`);
-    error.statusCode = 400;
-    return next(error);
+    errorMsg.push(["email", `${email} format email salah!`]);
   }
 
   // Password Lenght
   if (!/^.{6,}$/.test(password)) {
-    const error = new Error("Password anda harus 6 karakter! ");
-    error.statusCode = 400;
-    return next(error);
+    errorMsg.push(["passwordLength", "Password anda harus 6 karakter! "]);
   }
 
   // Password Confirmation
   if (!validator.equals(password, confirmPassword)) {
-    const error = new Error("Konfirmasi password anda tidak cocok! ");
-    error.statusCode = 400;
-    return next(error);
+    errorMsg.push(["passwordConf", "Konfirmasi password anda tidak cocok! "]);
   }
 
   // Phone Format
   if (!validator.isMobilePhone(phone, ["id-ID"])) {
-    const error = new Error("Nomer Hp harus format indonesia! ");
-    error.statusCode = 400;
-    return next(error);
+    errorMsg.push(["phone", "Nomer Hp harus format indonesia! "]);
+  }
+
+  if (errorMsg.length > 0) {
+    return next(errorMsg);
   }
 
   next();

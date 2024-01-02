@@ -30,8 +30,9 @@ const getDataSignUP = async (req, res) => {
 };
 
 const signUp = async (req, res) => {
+  const { username, email, password, phone } = req.body;
+
   try {
-    const { username, email, password, phone } = req.body;
     // Enkripsi Password
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);

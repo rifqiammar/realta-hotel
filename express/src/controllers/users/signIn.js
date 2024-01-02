@@ -34,15 +34,26 @@ const signIn = async (req, res) => {
     const userId = user.user_id;
     const userName = user.user_full_name;
 
-    const accessToken = jwt.sign({ userId, userName }, process.env.SECRET_TOKEN, {
-      expiresIn: "1d",
+    const accessToken = jwt.sign({ userId, username: userName }, process.env.SECRET_TOKEN, {
+      expiresIn: "30s",
     });
 
+    // Creating refresh token not that expiry of refresh
+    //token is greater than the access token
+    const refreshToken = jwt.sign(
+      {
+        userId,
+        username: userName,
+      },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "1d" }
+    );
+
     // Menyimpan Refresh token pada Cookies
-    res.cookie("accessToken", accessToken, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      secure: true,
+      // secure: true,
     });
 
     res.status(200).json({

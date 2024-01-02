@@ -125,7 +125,7 @@ const SignIn = () => {
         </div>
 
         {/* Side Image */}
-        <div className="w-2/5 h-full hidden lg:block">
+        <div className="mt-9 w-2/5 h-full hidden lg:block">
           <img
             src="https://plus.unsplash.com/premium_photo-1675745329954-9639d3b74bbf?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             className="h-full w-full object-cover rounded-3xl opacity-90 "

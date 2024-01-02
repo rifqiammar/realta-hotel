@@ -2,6 +2,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import { SignUp, SignIn, GuestSignUp } from "./pages/Auth";
+
 import { userRoutes } from "./routes";
 // const DefaultLayout = lazy(() => import("./layouts/DefaultLayout"));
 import DefaultLayout from "./layouts/DefaultLayout";
@@ -14,11 +15,12 @@ function App() {
           <Route path="signin" element={<SignIn />} />
           <Route path="guestsignup" element={<GuestSignUp />} />
           <Route path="signup" element={<SignUp />} />
+          <Route index caseSensitive={true} element={<Navigate to="signin" replace />} />
         </Route>
 
         {/* Users */}
         <Route path="/users/" element={<DefaultLayout />}>
-          {/* <Route index element={<ECommerce />} /> */}
+          {/* <Route index element={<Profile />} /> */}
           {userRoutes.map((routes, index) => {
             const { path, component: Component } = routes;
             return (

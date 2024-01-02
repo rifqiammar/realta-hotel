@@ -3,6 +3,7 @@ const { Router } = require("express");
 const { signUp, getDataSignUP, guestSignUp, addRole } = require("../controllers/users/signUp");
 const { signIn } = require("../controllers/users/signIn");
 const { getProfile } = require("../controllers/users/userProfile");
+const refreshToken = require("../controllers/users/refreshToken");
 
 const { signUpValidator, guestSignUpValidation } = require("../middlewares/validator/signUpValidator");
 const { signInValidation } = require("../middlewares/validator/signIn");
@@ -18,6 +19,9 @@ usersRoute.get("/addRole", addRole);
 
 // SignIn Route
 usersRoute.post("/signin", signInValidation, signIn);
+
+// Refresh Token
+usersRoute.get("/refreshtoken", refreshToken);
 
 // User Profile Route
 usersRoute.get("/userprofile", verifyToken, getProfile);

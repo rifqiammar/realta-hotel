@@ -1,9 +1,57 @@
+import { useState } from "react";
 import { Typography, Input, Checkbox, Button } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../images/logo-realta.png";
 
+import { signUp } from "../../actions/usersAction";
+
 const SignUp = () => {
   const navigate = useNavigate();
+
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  // Validation State
+  const [usernameVal, setUsernameVal] = useState("");
+  const [emailVal, setEmailVal] = useState("");
+  const [passwordVal, setPasswordVal] = useState("");
+  const [confirmPasswordVal, setConfirmPasswordVal] = useState("");
+  const [phoneVal, setPhoneVal] = useState("");
+  const [duplicateVal, setDuplicateVal] = useState("");
+
+  const signUpHandler = (e) => {
+    e.preventDefault();
+
+    const data = { username: fullName, email, password, confirmPassword, phone: phoneNumber };
+
+    signUp(data).then((e) => {
+      console.log(e);
+      if (e !== "success") {
+        e.forEach((e) => {
+          console.log(e);
+          if (e[0] === "username") {
+            setUsernameVal(e[1]);
+          } else if (e[0] === "email") {
+            setEmailVal(e[1]);
+          } else if (e[0] === "password") {
+            setPasswordVal(e[1]);
+          } else if (e[0] === "confirmPassword") {
+            setConfirmPasswordVal(e[1]);
+          } else if (e[0] === "phone") {
+            setPhoneVal(e[1]);
+          } else if (e[0] === "duplicate") {
+            setDuplicateVal(e[1]);
+          }
+        });
+        return;
+      }
+
+      navigate("/auth/signin");
+    });
+  };
 
   return (
     <>
@@ -19,29 +67,43 @@ const SignUp = () => {
             </Typography>
           </div>
 
-          <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">
+          <form onSubmit={signUpHandler} className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">
             <div className="mb-1 flex flex-col gap-6">
               <Typography variant="small" color="blue-gray" className="-mb-3">
                 Your Name
               </Typography>
               <Input
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                id="fullName"
                 size="lg"
-                placeholder="name@mail.com"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                placeholder="Your Name"
+                // Validation
                 labelProps={{
-                  className: "before:content-none after:content-none",
+                  className: !usernameVal || duplicateVal ? "before:content-none after:content-none ml-3" : "",
                 }}
+                className={!usernameVal || duplicateVal ? "!border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
+                label={usernameVal || duplicateVal ? (duplicateVal ? duplicateVal : usernameVal) : ""}
+                error={usernameVal || duplicateVal ? "true" : ""}
               />
+
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
                 Your email
               </Typography>
               <Input
+                type="email"
                 size="lg"
                 placeholder="name@mail.com"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                id="email"
                 labelProps={{
-                  className: "before:content-none after:content-none",
+                  className: !emailVal ? "before:content-none after:content-none ml-3" : "",
                 }}
+                className={!emailVal ? "!border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
+                label={emailVal ? emailVal : ""}
+                error={emailVal ? "true" : ""}
               />
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
                 Password
@@ -50,11 +112,17 @@ const SignUp = () => {
                 type="password"
                 size="lg"
                 placeholder="********"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                id="password"
                 labelProps={{
-                  className: "before:content-none after:content-none",
+                  className: !passwordVal ? "before:content-none after:content-none ml-3" : "",
                 }}
+                className={!passwordVal ? "!border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
+                label={passwordVal ? passwordVal : ""}
+                error={passwordVal ? "true" : ""}
               />
+
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
                 Confirm Password
               </Typography>
@@ -62,10 +130,15 @@ const SignUp = () => {
                 type="password"
                 size="lg"
                 placeholder="********"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                id="confirmPassword"
                 labelProps={{
-                  className: "before:content-none after:content-none",
+                  className: !confirmPasswordVal ? "before:content-none after:content-none ml-3" : "",
                 }}
+                className={!confirmPasswordVal ? "!border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
+                label={confirmPasswordVal ? confirmPasswordVal : ""}
+                error={confirmPasswordVal ? "true" : ""}
               />
               {/* Mobile Phone */}
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
@@ -78,15 +151,20 @@ const SignUp = () => {
                   </Typography>
                 </Button>
                 <Input
-                  type="tel"
+                  type="text"
                   placeholder="Phone Number"
-                  className="rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900"
                   labelProps={{
-                    className: "before:content-none after:content-none",
+                    className: !phoneVal ? "before:content-none after:content-none ml-3" : "",
                   }}
+                  className={!phoneVal ? "rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
+                  label={phoneVal ? phoneVal : ""}
+                  error={phoneVal ? "true" : ""}
                   containerProps={{
                     className: "min-w-0",
                   }}
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  id="phoneNumber"
                 />
               </div>
             </div>
@@ -102,7 +180,7 @@ const SignUp = () => {
               }
               containerProps={{ className: "-ml-2.5" }}
             />
-            <Button className="mt-6" fullWidth>
+            <Button type="submit" className="mt-6" fullWidth>
               Daftar Baru
             </Button>
 
@@ -177,7 +255,7 @@ const SignUp = () => {
         </div>
 
         {/* Side Image */}
-        <div className="w-2/5 h-full hidden lg:block">
+        <div className="mt-9  w-2/5 h-full hidden lg:block">
           <img
             src="https://plus.unsplash.com/premium_photo-1675745329954-9639d3b74bbf?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             className="h-full w-full object-cover rounded-3xl opacity-90 "
