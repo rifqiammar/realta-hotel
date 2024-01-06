@@ -3,10 +3,9 @@ const { User } = require("../../../models");
 
 const signUpValidator = async (req, res, next) => {
   const { username, email, password, confirmPassword, phone } = req.body;
-
   const data = { username, email, password, confirmPassword, phone };
 
-  // tempError
+  // tempErrorValidation
   let errorMsg = [];
 
   // Check Jika body kosong

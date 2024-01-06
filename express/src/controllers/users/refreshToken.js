@@ -22,7 +22,7 @@ const refreshToken = (req, res) => {
 
       //  - Create new access token
       const accessToken = jwt.sign({ userId, username }, process.env.SECRET_TOKEN, {
-        expiresIn: "5m",
+        expiresIn: "1m",
       });
 
       // Send Api Request

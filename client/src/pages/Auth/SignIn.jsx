@@ -1,9 +1,37 @@
+import { useState } from "react";
 import { Typography, Input, Checkbox, Button } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
+import { signIn } from "../../api/usersAction";
+
 import logo from "../../images/logo-realta.png";
 
 const SignIn = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  // Validation State
+  const [usernameVal, setUsernameVal] = useState("");
+  const [passwordVal, setPasswordVal] = useState("");
+
   const navigate = useNavigate();
+
+  const signInHandler = async (e) => {
+    e.preventDefault();
+
+    const result = await signIn({ username, password });
+
+    if (result.status === "failed") {
+      if (result.message.includes("Username")) {
+        setUsernameVal(result.message);
+      } else {
+        setPasswordVal(result.message);
+      }
+
+      return;
+    }
+
+    console.log({ result });
+  };
 
   return (
     <>
@@ -19,30 +47,52 @@ const SignIn = () => {
             </Typography>
           </div>
 
-          <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">
+          <form onSubmit={signInHandler} className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">
             <div className="mb-1 flex flex-col gap-6">
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-                Your email
+                Your Username
               </Typography>
               <Input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                id="username"
                 size="lg"
-                placeholder="name@mail.com"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                placeholder="username"
+                // Validation
                 labelProps={{
-                  className: "before:content-none after:content-none",
+                  className: !usernameVal ? "before:content-none after:content-none before:content-none after:content-none justify-end" : "",
                 }}
+                className={!usernameVal ? "!border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
+                label={usernameVal ? usernameVal : ""}
+                error={usernameVal ? true : false}
+                // Jika di Klik akan mengHapus Stat Validation
+                onClick={() => {
+                  setUsernameVal("");
+                }}
+                required
               />
-              <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+              <Typography variant="small" color="blue-gray" className="-mb-3 font-medium ">
                 Password
               </Typography>
               <Input
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                id="password"
                 size="lg"
                 placeholder="********"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
-                  className: "before:content-none after:content-none",
+                  className: !passwordVal ? "before:content-none after:content-none before:content-none after:content-none justify-end" : "",
                 }}
+                className={!passwordVal ? "!border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
+                label={passwordVal ? passwordVal : ""}
+                error={passwordVal ? true : false}
+                // Jika di Klik akan mengHapus Stat Validation
+                onClick={() => {
+                  setPasswordVal("");
+                }}
+                required
               />
             </div>
             <Checkbox
@@ -56,7 +106,7 @@ const SignIn = () => {
               }
               containerProps={{ className: "-ml-2.5" }}
             />
-            <Button className="mt-6" fullWidth>
+            <Button type="submit" className="mt-6" fullWidth>
               Sign In
             </Button>
 

@@ -3,20 +3,19 @@ var validator = require("validator");
 const signInValidation = (req, res, next) => {
   const { username, password } = req.body;
 
+  // tempErrorValidation
+  let errorMsg = [];
+
   if (validator.isEmpty(username)) {
-    const error = new Error(`Username tidak boleh kosong!`);
-    error.message = "Username tidak boleh kosong";
-    error.status = "failed";
-    error.statusCode = 400;
-    return next(error);
+    errorMsg.push(["username", "Username tidak boleh kosong!"]);
   }
 
   if (validator.isEmpty(password)) {
-    const error = new Error(`Password tidak boleh kosong!`);
-    error.message = "Password tidak boleh kosong";
-    error.status = "failed";
-    error.statusCode = 400;
-    return next(error);
+    errorMsg.push(["password", "Password tidak boleh kosong!"]);
+  }
+
+  if (errorMsg.length > 0) {
+    return next(errorMsg);
   }
 
   next();

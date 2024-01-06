@@ -3,7 +3,7 @@ import { Typography, Input, Checkbox, Button } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../images/logo-realta.png";
 
-import { signUp } from "../../actions/usersAction";
+import { signUp } from "../../api/usersAction";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ const SignUp = () => {
                 }}
                 className={!usernameVal || duplicateVal ? "!border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
                 label={usernameVal || duplicateVal ? (duplicateVal ? duplicateVal : usernameVal) : ""}
-                error={usernameVal || duplicateVal ? "true" : ""}
+                error={usernameVal || duplicateVal ? true : false}
               />
 
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
@@ -103,7 +103,7 @@ const SignUp = () => {
                 }}
                 className={!emailVal ? "!border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
                 label={emailVal ? emailVal : ""}
-                error={emailVal ? "true" : ""}
+                error={emailVal ? true : false}
               />
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
                 Password
@@ -120,7 +120,7 @@ const SignUp = () => {
                 }}
                 className={!passwordVal ? "!border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
                 label={passwordVal ? passwordVal : ""}
-                error={passwordVal ? "true" : ""}
+                error={passwordVal ? true : false}
               />
 
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
@@ -138,7 +138,7 @@ const SignUp = () => {
                 }}
                 className={!confirmPasswordVal ? "!border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
                 label={confirmPasswordVal ? confirmPasswordVal : ""}
-                error={confirmPasswordVal ? "true" : ""}
+                error={confirmPasswordVal ? true : false}
               />
               {/* Mobile Phone */}
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
@@ -158,7 +158,7 @@ const SignUp = () => {
                   }}
                   className={!phoneVal ? "rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900" : ""}
                   label={phoneVal ? phoneVal : ""}
-                  error={phoneVal ? "true" : ""}
+                  error={phoneVal ? true : false}
                   containerProps={{
                     className: "min-w-0",
                   }}

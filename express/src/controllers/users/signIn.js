@@ -24,7 +24,7 @@ const signIn = async (req, res) => {
     });
 
     // Jika Username tidak ditemukan
-    if (!user) throw new Error("Username anda salah!");
+    if (!user) throw new Error("Username tidak Valid!");
 
     // Decrypt
     const match = await bcrypt.compare(password, user.User_Password.uspa_passwordHash);
@@ -35,7 +35,7 @@ const signIn = async (req, res) => {
     const userName = user.user_full_name;
 
     const accessToken = jwt.sign({ userId, username: userName }, process.env.SECRET_TOKEN, {
-      expiresIn: "30s",
+      expiresIn: "1m",
     });
 
     // Creating refresh token not that expiry of refresh
@@ -58,14 +58,14 @@ const signIn = async (req, res) => {
 
     res.status(200).json({
       token: accessToken,
-      status: "success",
-      message: `Selamat ${userName} Anda berhasil masuk!`,
+      userId,
+      username: userName,
+      // roles: "",
     });
   } catch (error) {
     res.status(400).json({
       status: "failed",
-      message: "maaf anda Gagal masuk! ",
-      error: error.message,
+      message: error.message,
     });
   }
 };
